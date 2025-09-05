@@ -136,6 +136,7 @@ public class Main {
                 case 11 -> {
                     try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("NecklaceStones.txt"))) {
                         objectOutputStream.writeObject(necklace.getNecklace());
+                        System.out.println("Данные сохранены");
                     } catch (Exception ex) {
                         System.out.println(ex.getMessage());
                     }
@@ -144,6 +145,7 @@ public class Main {
                     try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("NecklaceStones.txt"))) {
                         ArrayList<Stone> stones = (ArrayList<Stone>) objectInputStream.readObject();
                         necklace.addStones(stones);
+                        System.out.println("Данные загружены");
                     } catch (EOFException e) {
                         System.out.println("Файл пуст");
                     } catch (Exception ex) {
