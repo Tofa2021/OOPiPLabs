@@ -28,4 +28,31 @@ public class Utils {
             }
         }
     }
+
+    public static int scanBorderInt(int lowerBorder, int upperBorder) {
+        while (true) {
+            try {
+                int input = scanner.nextInt();
+                if (input >= lowerBorder && input <= upperBorder) {
+                    return input;
+                } else {
+                    System.out.println("Вводимое число должно быть между " + lowerBorder + " и " + upperBorder);
+                }
+            } catch (InputMismatchException exception) {
+                System.out.println("Ввод должны быть числом");
+                scanner.next();
+            }
+        }
+    }
+
+    public static int scanInt() {
+        while (true) {
+            try {
+                return scanner.nextInt();
+            } catch (InputMismatchException exception) {
+                System.out.println("Ввод должны быть числом");
+                scanner.next();
+            }
+        }
+    }
 }

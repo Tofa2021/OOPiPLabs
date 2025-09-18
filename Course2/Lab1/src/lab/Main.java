@@ -2,8 +2,6 @@ package lab;
 
 import java.util.ArrayList;
 
-import static lab.Utils.scanner;
-
 public class Main {
     public static void main(String[] args) {
         Client client = new Client("Name");
@@ -13,7 +11,7 @@ public class Main {
             System.out.println("1) Добавить курс");
             System.out.println("2) Расчитать стоимость всех курсов");
             System.out.println("3) Выход");
-            int choice = scanner.nextInt();
+            int choice = Utils.scanInt();
             switch (choice) {
                 case 1:
                     System.out.println("Выберите время проведения");
@@ -33,7 +31,7 @@ public class Main {
                     }
 
                     System.out.println("Сколько месяцев вы хотите заниматься?");
-                    int monthDuration = scanner.nextInt();
+                    int monthDuration = Utils.scanBorderInt(0, 24);
 
                     CoursesManager.enroll(client, selectedCourse, monthDuration);
                     break;
