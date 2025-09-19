@@ -16,6 +16,7 @@ public abstract class Course implements Nameable {
         this.dayTime = dayTimes;
     }
 
+    @Override
     public String getName() {
         return name;
     }

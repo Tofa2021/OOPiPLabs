@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        Client client = new Client("Name");
+        System.out.println("Введите ваше имя");
+        Client client = new Client(Utils.scanner.next());
 
-        outer:
+        outerLoop:
         while (true) {
             System.out.println("1) Добавить курс");
             System.out.println("2) Расчитать стоимость всех курсов");
@@ -40,7 +41,9 @@ public class Main {
                     System.out.println("Стоимость всех курсов, на которые вы записались: " + client.calculateTotalPrice());
                     break;
                 case 3:
-                    break outer;
+                    break outerLoop;
+                default:
+                    System.out.println("Невозможное значение");
             }
         }
     }

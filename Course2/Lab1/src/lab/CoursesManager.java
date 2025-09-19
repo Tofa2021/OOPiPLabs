@@ -18,12 +18,26 @@ public class CoursesManager {
                 DayTime.EVENING,
                 "Java"
         ));
+        add(new ProgrammingCourse(
+                "Курс С#",
+                150,
+                StudyForm.ONLINE,
+                DayTime.EVENING,
+                "Java"
+        ));
+        add(new DesignCourse(
+                "Курс дизайна в Figma",
+                85,
+                StudyForm.ONLINE,
+                DayTime.MORNING,
+                "Figma"
+        ));
         add(new DesignCourse(
                 "Курс дизайна",
                 65,
                 StudyForm.ONLINE,
-                DayTime.MORNING,
-                "Figma"
+                DayTime.EVENING,
+                "Canva"
         ));
     }};
 
@@ -33,12 +47,16 @@ public class CoursesManager {
     }
 
     public static ArrayList<Course> getAvailableCourses(Client client, StudyForm studyForm, DayTime dayTime) {
-        ArrayList<Course> availableCourses = new ArrayList<>();
-        for (var course : courses) {
-            if (course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client)) {
-                availableCourses.add(course);
+        return filterCourses(course -> course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client));
+    }
+
+    public static ArrayList<Course> filterCourses(CourseFilter courseFilter) {
+        ArrayList<Course> result = new ArrayList<>();
+        for (Course course : courses) {
+            if (courseFilter.filter(course)) {
+                result.add(course);
             }
         }
-        return availableCourses;
+        return result;
     }
 }
