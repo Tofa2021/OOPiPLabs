@@ -1,6 +1,7 @@
 package lab;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class CoursesManager {
     private static final ArrayList<Course> courses = new ArrayList<>() {{
@@ -50,10 +51,10 @@ public class CoursesManager {
         return filterCourses(course -> course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client));
     }
 
-    public static ArrayList<Course> filterCourses(CourseFilter courseFilter) {
+    public static ArrayList<Course> filterCourses(Predicate<? super Course> predicate) {
         ArrayList<Course> result = new ArrayList<>();
         for (Course course : courses) {
-            if (courseFilter.filter(course)) {
+            if (predicate.test(course)) {
                 result.add(course);
             }
         }
