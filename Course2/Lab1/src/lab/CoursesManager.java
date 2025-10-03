@@ -1,10 +1,11 @@
 package lab;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class CoursesManager {
-    private static final ArrayList<Course> courses = new ArrayList<>() {{
+    private static final List<Course> courses = new ArrayList<>() {{
         add(new ProgrammingCourse(
                 "Курс Python",
                 120,
@@ -51,7 +52,11 @@ public class CoursesManager {
         return filterCourses(course -> course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client));
     }
 
-    public static ArrayList<Course> filterCourses(Predicate<? super Course> predicate) {
+    public static List<Course> getAllCourses() {
+        return courses;
+    }
+
+    public static ArrayList<Course> filterCourses(Predicate<Course> predicate) {
         ArrayList<Course> result = new ArrayList<>();
         for (Course course : courses) {
             if (predicate.test(course)) {
