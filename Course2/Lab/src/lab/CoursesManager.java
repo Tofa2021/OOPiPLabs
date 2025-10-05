@@ -2,7 +2,8 @@ package lab;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CoursesManager {
     private static final List<Course> courses = new ArrayList<>() {{
@@ -21,11 +22,11 @@ public class CoursesManager {
                 "Java"
         ));
         add(new ProgrammingCourse(
-                "Курс С#",
+                "Курс C#",
                 150,
                 StudyForm.ONLINE,
                 DayTime.EVENING,
-                "Java"
+                "C#"
         ));
         add(new DesignCourse(
                 "Курс дизайна в Figma",
@@ -48,21 +49,38 @@ public class CoursesManager {
         client.addClientCourse(course, monthDuration);
     }
 
-    public static ArrayList<Course> getAvailableCourses(Client client, StudyForm studyForm, DayTime dayTime) {
-        return filterCourses(course -> course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client));
+    public static List<Course> getAvailableCourses(Client client, StudyForm studyForm, DayTime dayTime) {
+        return courses.stream()
+                .filter(course -> course.isAvailable(studyForm, dayTime) && !course.isEnrolled(client))
+                .toList();
     }
 
     public static List<Course> getAllCourses() {
         return courses;
     }
 
-    public static ArrayList<Course> filterCourses(Predicate<Course> predicate) {
-        ArrayList<Course> result = new ArrayList<>();
-        for (Course course : courses) {
-            if (predicate.test(course)) {
-                result.add(course);
-            }
-        }
-        return result;
+    public static Course findByName(String name) {
+        return courses.stream()
+                .filter(course -> course.getName().equalsIgnoreCase(name.trim()))
+                .findFirst()
+                .orElse(null);
     }
+
+    public static Map<String, List<Course>> groupByType() {
+        return courses.stream()
+                .collect(Collectors.groupingBy(course -> course.getClass().getSimpleName()));
+    }
+
+    public static List<Course> getCoursesByMaxPrice(int maxPrice) {
+        return courses.stream()
+                .filter(course -> course.getPricePerMonth() <= maxPrice)
+                .toList();
+    }
+
+    public static List<String> getCoursePriceInfo() {
+        return courses.stream()
+                .map(course -> course.getName() + ": " + course.getPricePerMonth() + " руб.")
+                .toList();
+    }
+
 }
