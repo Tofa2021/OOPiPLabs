@@ -69,7 +69,6 @@ public class Main {
                         }
                         break;
                     case 6:
-                        executorService.shutdown();
                         break outerLoop;
                     default:
                         System.out.println("Невозможное значение");
