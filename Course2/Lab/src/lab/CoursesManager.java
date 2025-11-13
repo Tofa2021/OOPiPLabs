@@ -61,7 +61,7 @@ public class CoursesManager {
 
     public static Course findByName(String name) {
         return courses.stream()
-                .filter(course -> course.getName().equalsIgnoreCase(name.trim()))
+                .filter(course -> course.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
     }
@@ -82,5 +82,4 @@ public class CoursesManager {
                 .map(course -> course.getName() + ": " + course.getPricePerMonth() + " руб.")
                 .toList();
     }
-
 }
