@@ -1,12 +1,11 @@
 package org.example.lab5.controller;
 
 import org.example.lab5.model.CafeModel;
-import org.example.lab5.model.User;
-import org.example.lab5.patterns.Observer;
+import org.example.lab5.patterns.Listener;
 import org.example.lab5.view.LoginView;
 import org.example.lab5.view.RegisterView;
 
-public class AuthController implements Observer {
+public class AuthController implements Listener {
     private final CafeModel model;
     private final LoginView loginView;
     private final RegisterView registerView;
@@ -19,7 +18,7 @@ public class AuthController implements Observer {
         this.loginView = loginView;
         this.registerView = registerView;
 
-        model.addObserver(this);
+        model.addListener(this);
         setupEventHandlers();
     }
 

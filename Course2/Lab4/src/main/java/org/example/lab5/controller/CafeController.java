@@ -8,22 +8,26 @@ import org.example.lab5.patterns.*;
 import org.example.lab5.view.CafeView;
 import org.example.lab5.view.LoginView;
 
-public class CafeController implements Observer {
+public class CafeController {
     private final CafeModel model;
     private final CafeView cafeView;
     private Runnable showLoginView;
+    private SearchStrategy searchStrategy = new NameSearchStrategy();
 
     public CafeController(CafeModel model, CafeView cafeView, LoginView loginView) {
         this.model = model;
         this.cafeView = cafeView;
 
-        model.addObserver(cafeView);
+        model.addListener(cafeView);
+
         setupEventHandlers();
+        refreshComputers();
+        updateUserInfo();
     }
 
     private void setupEventHandlers() {
         cafeView.getLogoutButton().setOnAction(e -> handleLogout());
-        cafeView.getSearchButton().setOnAction(e -> handleSearch());
+        cafeView.getSearchButton().setOnAction(e -> handleSearch(searchStrategy));
         cafeView.getStartSessionButton().setOnAction(e -> handleStartSession());
         cafeView.getEndSessionButton().setOnAction(e -> handleEndSession());
         cafeView.getAddBalanceButton().setOnAction(e -> handleAddBalance());
@@ -35,11 +39,10 @@ public class CafeController implements Observer {
         showLoginView.run();
     }
 
-    private void handleSearch() {
+    private void handleSearch(SearchStrategy strategy) {
         String query = cafeView.getSearchField().getText();
         String searchType = cafeView.getSearchTypeComboBox().getValue();
 
-        SearchStrategy strategy;
         if ("По типу".equals(searchType)) {
             strategy = new ComputerTypeSearchStrategy();
         } else {
@@ -54,10 +57,7 @@ public class CafeController implements Observer {
         Computer selectedComputer = cafeView.getComputersTable().getSelectionModel().getSelectedItem();
         if (selectedComputer != null) {
             if (model.startSession(selectedComputer)) {
-                cafeView.getStatusLabel().setText("Сессия начата на компьютере: " + selectedComputer.getName());
                 refreshComputers();
-            } else {
-                cafeView.getStatusLabel().setText("Не удалось начать сессию. Проверьте баланс.");
             }
         }
     }
@@ -67,10 +67,6 @@ public class CafeController implements Observer {
         if (selectedComputer != null) {
             Session endedSession = model.endSession(selectedComputer);
             if (endedSession != null) {
-                double cost = endedSession.calculateCost();
-                cafeView.getStatusLabel().setText(
-                        String.format("Сессия завершена. Стоимость: %.2f", cost)
-                );
                 refreshComputers();
                 updateUserInfo();
             }
@@ -83,7 +79,6 @@ public class CafeController implements Observer {
             if (amount > 0) {
                 model.addBalanceToCurrentUser(amount);
                 cafeView.getAmountField().clear();
-                cafeView.getStatusLabel().setText("Баланс пополнен на: " + amount);
                 updateUserInfo();
             }
         } catch (NumberFormatException e) {
@@ -105,12 +100,6 @@ public class CafeController implements Observer {
                             currentUser.getBalance())
             );
         }
-    }
-
-    @Override
-    public void update(String message) {
-        cafeView.getStatusLabel().setText(message);
-        System.out.println("Cafe System: " + message);
     }
 
     public void setShowLoginView(Runnable showLoginView) {

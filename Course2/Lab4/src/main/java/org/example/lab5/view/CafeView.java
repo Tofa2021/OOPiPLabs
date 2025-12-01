@@ -11,9 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import org.example.lab5.model.Computer;
-import org.example.lab5.patterns.Observer;
+import org.example.lab5.patterns.Listener;
 
-public class CafeView extends BorderPane implements Observer {
+public class CafeView extends BorderPane implements Listener {
     private TableView<Computer> computersTable;
     private TextField searchField;
     private Button searchButton;
@@ -106,7 +106,7 @@ public class CafeView extends BorderPane implements Observer {
 
     @Override
     public void update(String message) {
-        statusLabel.setText(message);
+        System.out.println("Cafe System: " + message);
         computersTable.refresh();
     }
 

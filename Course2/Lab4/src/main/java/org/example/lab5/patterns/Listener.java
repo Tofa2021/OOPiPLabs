@@ -1,5 +1,5 @@
 package org.example.lab5.patterns;
 
-public interface Observer {
+public interface Listener {
     void update(String message);
 }
